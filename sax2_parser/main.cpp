@@ -9,14 +9,13 @@
 using namespace tinyxml2;
 using namespace std;
 
-class sax2Parser {
+class dom2Parser {
 public:
 	XMLDocument xmlFile;
 	vector<const char*> xmlTags = { "author", "title", "genre", "price", "publish_date","description" };
 	XMLElement* rootElement;
 	XMLElement* bookDiv;
 	fstream csvFile;
-	string holder[7];
 
 	void read_xml_file(){  xmlFile.LoadFile("compiler.xml"); }
 	
@@ -46,29 +45,21 @@ public:
 		csvFile.open("Parsed_Content.csv", ios::out);
 		csvFile<<"id"<< "," << "author"  << "," << "title" << "," << "genre" << "," << "price" << "," << "publish_date"
 			<< "," << "description"<<"\n";
-		int j = 1;
+		
 		while (bookDiv) {
-			//cout << "id :" << bookDiv->Attribute("id") << "\n";
+			
 			holder[0] = bookDiv->Attribute("id");
 			csvFile << bookDiv->Attribute("id")<<" , ";
 			for (size_t i{}; i < xmlTags.size(); ++i) {
-				if (j  >6)
-				{
-					j = 1;
-				}
 				XMLElement* fetch = bookDiv->FirstChildElement(xmlTags[i]);
-				//cout << xmlTags[i] << " : " << fetch->GetText() << "\n";
-			//	cout << (i == xmlTags.size() - 1 ? "\n" : "");
 				holder[j] = fetch->GetText();
 				csvFile << fetch->GetText() << " , ";
-				j++;
+				
 			}
 			csvFile << " \n";
 			
 
-			//csvFile << holder[0] << "," << holder[1] << "," << holder[2] << "," << holder[3]
-				//<< "," << holder[4] << "," << holder[5] 
-				//<< "," << holder[6] << "\n";
+			
 			
 			bookDiv = bookDiv->NextSiblingElement("book");
 
@@ -84,7 +75,7 @@ public:
 
 int main()
 {
-	sax2Parser parser;
+	dom2Parser parser;
 	parser.read_xml_file();
 	parser.assign_root_div();
 	parser.print_parsed_data();
