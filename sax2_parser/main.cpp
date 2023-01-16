@@ -48,11 +48,11 @@ public:
 		
 		while (bookDiv) {
 			
-			holder[0] = bookDiv->Attribute("id");
+			
 			csvFile << bookDiv->Attribute("id")<<" , ";
 			for (size_t i{}; i < xmlTags.size(); ++i) {
 				XMLElement* fetch = bookDiv->FirstChildElement(xmlTags[i]);
-				holder[j] = fetch->GetText();
+				
 				csvFile << fetch->GetText() << " , ";
 				
 			}
